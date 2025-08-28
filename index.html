@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Our Love Journey 💖</title>
+<style>
+  :root{
+    --pink:#ff6f91;
+    --pink-soft:#ff85a1;
+    --lav:#a6c1ee;
+    --paper:#fffdf8;
+    --ink:#222;
+  }
+  body{
+    margin:0;
+    font-family:"Poppins",sans-serif;
+    background:linear-gradient(135deg,#fbc2eb,#a6c1ee);
+    background-size:200% 200%;
+    animation:bgShift 18s ease-in-out infinite;
+    color:#fff;
+    overflow-x:hidden;
+  }
+  @keyframes bgShift{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+  header,section{display:none;opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s;min-height:100vh;padding:24px 18px 70px;box-sizing:border-box}
+  header.active,section.active{display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:1;transform:translateY(0)}
+  h1{font-size:2.1rem;margin:0 0 18px}
+  h2{margin:.2rem 0 1rem}
+  .btn{background:var(--pink-soft);border:none;color:#fff;padding:12px 22px;border-radius:28px;font-size:1rem;cursor:pointer;box-shadow:0 10px 25px rgba(0,0,0,.15)}
+  .back-arrow{position:fixed;top:12px;left:12px;z-index:5;width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:12px;color:#fff;font-size:18px;cursor:pointer}
+  .back-arrow.hidden{opacity:0;pointer-events:none}
+  .card{width:min(680px,92vw);background:rgba(255,255,255,.12);border-radius:22px;padding:18px 16px 16px;margin:6px auto 0}
+  label{font-weight:600}
+  textarea{width:100%;padding:12px;border-radius:14px;font-size:1rem}
+  .envelope{width:220px;height:150px;margin:20px auto;position:relative;cursor:pointer}
+  .env-body{position:absolute;inset:0;background:#ffe3ea;border-radius:12px}
+  .env-flap{position:absolute;top:0;left:0;right:0;height:75%;background:#ffafc2;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;transition:.9s}
+  .env-seal{position:absolute;top:48%;left:50%;transform:translate(-50%,-50%) rotate(45deg);width:26px;height:26px;background:var(--pink)}
+  .env-paper{position:absolute;left:8%;right:8%;bottom:12%;height:64%;background:var(--paper);border-radius:10px}
+  .envelope.open .env-flap{transform:rotateX(170deg)}
+  .envelope.open .env-paper{animation:slidePaper 1.2s .15s ease both}
+  @keyframes slidePaper{to{transform:translateY(-80px)}}
+  .letter{display:none;width:min(680px,92vw);background:var(--paper);color:var(--ink);border-radius:20px;padding:18px;max-height:60vh;overflow-y:auto;line-height:1.6}
+  .timeline{margin-top:18px;padding:14px;background:rgba(255,255,255,.12);border-radius:16px;max-height:35vh;overflow-y:auto;width:min(680px,92vw)}
+  .day{margin:6px 0;color:#fff}
+  #surprise .card{color:#000;background:var(--paper)}
+  .heart{position:fixed;bottom:-20px;width:18px;height:18px;background:var(--pink);transform:rotate(45deg);animation:floatUp 12s ease-in-out forwards;z-index:0}
+  .heart::before,.heart::after{content:"";position:absolute;width:18px;height:18px;background:var(--pink);border-radius:50%}
+  .heart::before{top:-9px;left:0}.heart::after{left:-9px;top:0}
+  @keyframes floatUp{0%{transform:translateY(0) rotate(45deg);opacity:.9}100%{transform:translateY(-100vh) rotate(45deg);opacity:0}}
+  #musicBtn{position:fixed;bottom:16px;right:16px;width:54px;height:54px;border-radius:50%;background:var(--pink);border:none;color:#fff;font-size:22px;cursor:pointer;z-index:6}
+</style>
+</head>
+<body>
+<button class="back-arrow hidden" id="backBtn">⮌</button>
+
+<header id="home" class="active">
+  <h1>💖 My Love, You Are My Forever 💖</h1>
+  <button class="btn" onclick="show('tasks')">Start Our Journey</button>
+</header>
+
+<section id="tasks">
+  <h2>Answer these 💌</h2>
+  <form id="loveForm" class="card">
+    <div id="task1">
+      <label>1) What do you like about me? 🥰</label>
+      <textarea name="like" required></textarea>
+      <button type="button" class="btn" onclick="nextTask(2)">Next</button>
+    </div>
+    <div id="task2" style="display:none">
+      <label>2) What did you think when we first texted? 💬</label>
+      <textarea name="firstThought" required></textarea>
+      <button type="button" class="btn" onclick="nextTask(1)">Back</button>
+      <button type="button" class="btn" onclick="nextTask(3)">Next</button>
+    </div>
+    <div id="task3" style="display:none">
+      <label>3) I can’t stop thinking about you when… 🔥</label>
+      <textarea name="cantStop" required></textarea>
+      <button type="button" class="btn" onclick="nextTask(2)">Back</button>
+      <button type="submit" class="btn">Send & Open Letter 💌</button>
+    </div>
+  </form>
+</section>
+
+<section id="envelopeSection">
+  <h2>Tap the envelope 💌</h2>
+  <div class="envelope" id="envelope" onclick="openEnvelope()">
+    <div class="env-body"></div>
+    <div class="env-flap"></div>
+    <div class="env-paper"></div>
+    <div class="env-seal"></div>
+  </div>
+  <div class="letter" id="letter"></div>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<section id="surprise">
+  <h2>💋 Our Secret Chapter 💋</h2>
+  <div class="card">
+    <p>
+      We’re in a long-distance love, but trust me, the freaky thoughts travel across any distance.  
+      I crave every way I can make you blush, squirm, and smile — even through a screen.  
+      On <strong>Day 10 (27 August)</strong>, that sexy photo wrecked my self-control.  
+      I replay it in my head, imagining my hands on you, my lips exploring you.  
+      One day, distance will give up and I’ll do everything I whisper about. Until then, I love every tease, every fantasy, every piece of you. 🔥💖
+    </p>
+    <button class="btn" onclick="restartJourney()">Restart Journey 🔄</button>
+  </div>
+</section>
+
+<audio id="bgMusic" preload="auto" loop>
+  <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Buckley/Moments/Scott_Buckley_-_Cherished.mp3" type="audio/mpeg"/>
+</audio>
+<button id="musicBtn">🎵</button>
+<script>
+const sections={home:home,tasks:tasks,envelope:envelopeSection,surprise:surprise};
+let stack=['home'];function show(id){for(const k in sections){sections[k].classList.remove('active');sections[k].style.display='none'}
+sections[id].style.display='flex';setTimeout(()=>sections[id].classList.add('active'),10);
+backBtn.classList.toggle('hidden',id==='home');if(stack[stack.length-1]!==id)stack.push(id)}
+backBtn.onclick=()=>{if(stack.length>1){stack.pop();show(stack[stack.length-1])}}
+
+function nextTask(n){for(let i=1;i<=3;i++){document.getElementById('task'+i).style.display=(i===n)?'block':'none'}}
+
+loveForm.onsubmit=e=>{
+  e.preventDefault();
+  const data=new FormData(loveForm);
+  // send to Formspree
+  fetch("https://formspree.io/f/xnnbnjeb",{
+    method:"POST",
+    body:data,
+    headers:{'Accept':'application/json'}
+  }).then(()=>show('envelope'))
+  .catch(()=>show('envelope'));
+}
+
+let typed=false;
+function openEnvelope(){if(typed)return;envelope.classList.add('open');setTimeout(typeLetter,900)}
+
+function typeLetter(){
+  typed=true;
+  const data=new FormData(loveForm);
+  const like=data.get('like'),first=data.get('firstThought'),cant=data.get('cantStop');
+  const txt=`My Love ❤️
+
+It’s been 12 days, and I’m falling harder every one. You said you like me because "${like}", and that melted me.
+
+When we first texted, you thought "${first}", and that little spark became fireworks for me.
+
+You told me you can’t stop thinking about me when "${cant}". That thought alone makes me want you even more.
+
+And on Day 10 (27 August), that sexy photo… you know exactly how to drive me crazy 😏🔥. Long distance or not, I love all your sides — sweet, silly, and so damn irresistible. 💕
+
+Forever yours 💌`;
+  letter.textContent="";
+  letter.style.display='block';
+  let i=0;const int=setInterval(()=>{
+    letter.textContent+=txt[i++];if(i>=txt.length){clearInterval(int);addContinue()}},28)
+}
+
+function addContinue(){
+  const btn=document.createElement('button');
+  btn.textContent='Continue 💕';btn.className='btn';btn.onclick=()=>show('surprise');
+  letter.appendChild(document.createElement('br'));
+  letter.appendChild(btn);
+
+  timeline.innerHTML=`<h3>✨ Our First 12 Days ✨</h3>
+  <div class="day"><strong>Day 1:</strong> The spark lit up.</div>
+  <div class="day"><strong>Day 2:</strong> Your texts made me grin nonstop.</div>
+  <div class="day"><strong>Day 3:</strong> Your voice echoed in my head at night.</div>
+  <div class="day"><strong>Day 4:</strong> I knew I was falling.</div>
+  <div class="day"><strong>Day 5:</strong> Your laugh = my favorite sound.</div>
+  <div class="day"><strong>Day 6:</strong> You felt like home.</div>
+  <div class="day"><strong>Day 7:</strong> I reread our chats endlessly.</div>
+  <div class="day"><strong>Day 8:</strong> Obsessed with your vibe.</div>
+  <div class="day"><strong>Day 9:</strong> Every detail became my favorite.</div>
+  <div class="day"><strong>Day 10 (27 Aug):</strong> That sexy photo… still stuck in my head 🔥</div>
+  <div class="day"><strong>Day 11:</strong> I want every side of you.</div>
+  <div class="day"><strong>Day 12:</strong> I love you deeper than words.</div>`
+}
+
+function restartJourney(){typed=false;letter.textContent="";envelope.classList.remove('open');show('home')}
+
+setInterval(()=>{let h=document.createElement('div');h.className='heart';h.style.left=Math.random()*innerWidth+'px';document.body.appendChild(h);setTimeout(()=>h.remove(),12000)},1400)
+
+const musicBtn=document.getElementById('musicBtn'),bgMusic=document.getElementById('bgMusic');
+musicBtn.onclick=()=>{if(bgMusic.paused){bgMusic.play();musicBtn.textContent='⏸'}else{bgMusic.pause();musicBtn.textContent='🎵'}}
+</script>
+</body>
+</html>
